@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {% block head_meta %}
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="{{ config['AUTHOR'] }}">
+    <meta name="description" content="{{ config['DESCRIPTION'] }}">
+    {% endblock %}
+    <title>{% block title %}{{ config['APP_NAME'] }}{% endblock %}</title>
+    {% block favicon %}
+    <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
+    {% endblock %}
+    {% block css_vendor %}
+    <!-- Vendor styles -->
+    {% assets "css_vendor" %}
+    <link href="{{ ASSET_URL }}" rel="stylesheet">
+    {% endassets %}
+    {% endblock %}
+    {% block css_plugins %}
+    <!-- Plugin styles -->
+    {% assets "css_plugins" %}
+    <link href="{{ ASSET_URL }}" rel="stylesheet">
+    {% endassets %}
+    {% endblock %}
+    {% block css_app %}
+    <!-- App styles -->
+    {% assets "css_app" %}
+    <link href="{{ ASSET_URL }}" rel="stylesheet">
+    {% endassets %}
+    {% endblock %}
+    {% block head_tail %}{% endblock %}
+</head>
+{% block body_tag %}
+<body>
+{% endblock %}
+{% block page_body %}
+{% endblock %}
+{% block messages %}
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <ul id="messages" style="display: none">
+        {% set mapping = {'message': 'success'} %}
+        {% for category, message in messages %}
+        <li data-category="{{ mapping.get(category, category|default('success', true)) }}">{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+{% endwith %}
+{% endblock %}
+{% block js_vendor %}
+    <!-- Vendor scripts -->
+    {% assets "js_vendor" %}
+    <script src="{{ ASSET_URL }}"></script>
+    {% endassets %}
+{% endblock %}
+{% block plugin_js %}
+    <!-- Plugin scripts -->
+    {% assets "js_plugins" %}
+    <script src="{{ ASSET_URL }}"></script>
+    {% endassets %}
+{% endblock %}
+{% block app_js %}
+    <!-- Main scripts -->
+    {% assets "js_main" %}
+    <script src="{{ ASSET_URL }}"></script>
+    {% endassets %}
+{% endblock %}
+{% block tail %}{% endblock %}
+</body>
+</html>

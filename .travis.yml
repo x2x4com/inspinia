@@ -1,0 +1,14 @@
+language: python
+python:
+  - 2.7
+install:
+  - make init
+  - make install
+script:
+  - make lint
+  - make test
+  - make build
+deploy:
+  provider: heroku
+  api_key:
+    secure: "YOUR ENCRYPTED API KEY"
