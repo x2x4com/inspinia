@@ -25,6 +25,5 @@ deploy:
   on:
     repo: derek-miller/flask-template
   run:
-    - "bin/post_build"
     - "python -m flask_template.manage upgrade"
     - restart
