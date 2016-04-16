@@ -2,8 +2,7 @@ language: python
 python:
   - 2.7
 env:
-  - DATABASE_URL="postgresql://localhost:5432/travis_ci_test"
-  - REDIS_URL="redis://localhost:6379/0"
+  - DATABASE_URL="postgresql://localhost:5432/travis_ci_test" REDIS_URL="redis://localhost:6379/0"
 services:
   - postgresql
   - redis-server
