@@ -1,6 +1,7 @@
 recursive-include flask_template/frontend/templates *
 recursive-include flask_template/frontend/static *
 recursive-include flask_template/migrations *
+include install-requirements.txt
 include requirements.txt
 include README.md
 include LICENSE

@@ -4,8 +4,7 @@ from __future__ import print_function, absolute_import, division, unicode_litera
 import importlib
 import pkgutil
 
-from flask import Blueprint
-from flask.json import JSONEncoder as BaseJSONEncoder
+from flask import Blueprint, json
 
 
 def register_blueprints(app, package_name, package_path):
@@ -20,14 +19,14 @@ def register_blueprints(app, package_name, package_path):
     return registered_views
 
 
-class JSONEncoder(BaseJSONEncoder):
+class JSONEncoder(json.JSONEncoder):
     def default(self, obj):  # pylint: disable=method-hidden
-        if isinstance(obj, JsonSerializer):
+        if isinstance(obj, JSONSerializer):
             return obj.to_json()
         return super(JSONEncoder, self).default(obj)
 
 
-class JsonSerializer(object):
+class JSONSerializer(object):
     __json_public__ = None
     __json_hidden__ = None
     __json_modifiers__ = None

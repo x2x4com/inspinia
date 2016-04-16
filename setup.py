@@ -1,5 +1,4 @@
 #! /usr/bin/env python
-"""Setup script for installing as a module."""
 import ast
 import os
 import re
@@ -31,10 +30,9 @@ setup(
     long_description=read('README.md') + '\n\n\n' + read('LICENSE'),
     author=special_members.get('__author__'),
     author_email=special_members.get('__author_email__'),
-    maintainer=special_members.get('__maintainer__'),
-    maintainer_email=special_members.get('__maintainer_email__'),
     url=special_members.get('__url__'),
-    packages=find_packages(exclude=['tests', 'docs']),
+    packages=find_packages(exclude=['tests']),
+    copyright=special_members.get('__copyright__'),
     license=special_members.get('__license__'),
     classifiers=[
         'Private :: Do Not Upload',
@@ -42,15 +40,18 @@ setup(
         'Environment :: Web Environment',
         'Framework :: Flask',
         'Intended Audience :: End Users/Desktop',
+        'License :: OSI Approved :: BSD License',
         'Natural Language :: English',
-        'Operating System :: Unix',
-        'Programming Language :: Python :: 2.7',
+        'Operating System :: OS Independent',
+        'Programming Language :: Python',
+        'Programming Language :: Python :: 2',
         'Programming Language :: Python :: 2 :: Only',
+        'Programming Language :: Python :: 2.7',
         'Topic :: Database :: Database Engines/Servers',
-        'Topic :: Database :: Front-Ends',
-        'Topic :: Documentation :: Sphinx'
+        'Topic :: Database :: Front-Ends'
     ],
-    install_requires=[str(x.req) for x in parse_requirements('requirements.txt', session=False)],
+    install_requires=[str(x.req) for x in parse_requirements('install-requirements.txt', session=False)],
+    tests_require=[str(x.req) for x in parse_requirements('requirements.txt', session=False)],
     include_package_data=True,
     zip_safe=False
 )

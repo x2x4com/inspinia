@@ -4,5 +4,3 @@ mock
 pylint
 pytest
 pytest-cov
-sphinx
-sphinxcontrib-httpdomain

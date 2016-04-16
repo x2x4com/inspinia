@@ -11,20 +11,19 @@ from flask_security import url_for_security
 from flask_sqlalchemy import SQLAlchemy
 from raven.contrib.flask import Sentry
 
-#: Flask :class:`~flask_sqlalchemy.SQLAlchemy` extension instance.
+# Flask-QLAlchemy extension instance.
 db = SQLAlchemy()
 
-#: Flask :class:`~flask_mail.Mail` extension instance.
+# Flask-Mail extension instance.
 mail = Mail()
 
-#: :class:`~raven.contrib.flask.Sentry` logging instance.
+# Flask Sentry logging instance.
 sentry = Sentry()
 
 
 class Service(object):
     """A :class:`.Service` instance encapsulates common :class:`~flask_sqlalchemy.SQLAlchemy` model operations in the
-    context of a :class:`~flask.Flask` application.
-    """
+    context of a :class:`~flask.Flask` application."""
     __model__ = None
 
     def _isinstance(self, model, raise_error=True):

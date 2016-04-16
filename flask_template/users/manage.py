@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# pylint: disable=function-redefined
 from __future__ import print_function, absolute_import, division, unicode_literals
 
 from flask_script import prompt, prompt_pass, Manager

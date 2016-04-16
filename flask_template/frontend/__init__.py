@@ -3,13 +3,12 @@ from __future__ import print_function, absolute_import, division, unicode_litera
 
 from functools import wraps
 
-from flask import abort, render_template, request
+from flask import render_template, request
 from flask_login import login_required
-from werkzeug.exceptions import HTTPException, InternalServerError, NotFound, Unauthorized, Forbidden
+from werkzeug.exceptions import InternalServerError, NotFound, Unauthorized, Forbidden
 
 from . import assets, admin
-from .. import factory, tasks, settings
-from ..core import sentry
+from .. import factory, tasks
 
 
 def create_app(settings_override=None):
@@ -47,29 +46,14 @@ def handle_error(error):
 def route(blueprint, *args, **kwargs):
     kwargs.setdefault('strict_slashes', False)
     kwargs.setdefault('methods', ['GET'])
-
-    if kwargs.pop('login_required', True):
-        auth = login_required
-    else:
-        auth = lambda x: x
+    auth = login_required if kwargs.pop('login_required', True) else lambda x: x
 
     def decorator(func):
         @blueprint.route(*args, **kwargs)
         @auth
         @wraps(func)
         def wrapper(*args, **kwargs):  # pylint: disable=unused-variable
-            try:
-                return func(*args, **kwargs)
-            except HTTPException as ex:
-                # These are normal HTTP exceptions that should be bubbled up
-                if not settings.DEBUG and ex.code >= 500:
-                    sentry.captureException()
-                raise
-            except Exception as ex:
-                if settings.DEBUG:
-                    raise
-                sentry.captureException()
-                abort(500, str(ex))
+            return func(*args, **kwargs)
 
         return func
 

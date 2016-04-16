@@ -21,7 +21,7 @@ jsmin
 psycopg2
 pygments
 python-dateutil
-raven
+raven[flask]
 recordtype
 redis
 requests[security]

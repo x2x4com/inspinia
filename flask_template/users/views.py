@@ -12,7 +12,7 @@ from ..services import users
 
 class UserView(AdminRoleModelView):
     column_list = ('id', 'first_name', 'last_name', 'email', 'active', 'login_count', 'roles')
-    column_searchable_list = ('id','first_name', 'last_name', 'email', 'last_login_ip', 'current_login_ip')
+    column_searchable_list = ('id', 'first_name', 'last_name', 'email', 'last_login_ip', 'current_login_ip')
     column_filters = ('id', 'first_name', 'last_name', 'email', 'active', 'confirmed_at', 'registered_at',
                       'last_login_at', 'current_login_at', 'last_login_ip', 'current_login_ip', 'login_count', u'roles')
     column_editable_list = ('first_name', 'last_name', 'email', 'active', 'confirmed_at', 'registered_at',

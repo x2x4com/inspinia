@@ -1,9 +1,17 @@
 language: python
 python:
   - 2.7
+env:
+  - DATABASE_URL="postgresql://localhost:5432/travis_ci_test"
+  - REDIS_URL="redis://localhost:6379/0"
+services:
+  - postgresql
+  - redis-server
 install:
   - make init
   - make install
+before_script:
+  - psql -c 'create database travis_ci_test;' -U postgres
 script:
   - make lint
   - make test
@@ -11,4 +19,12 @@ script:
 deploy:
   provider: heroku
   api_key:
-    secure: "YOUR ENCRYPTED API KEY"
+    secure: K5ERtiMa/Y//7Kthx8giJgt1UwHK0pkbY4ko7nIIQFdRGLtBHL21bv+Mowoyd1ZD0SwUNqD0fQU2i83iHceH/UUaPHB7xIvslvct4uXVfvMMLUnivD0quAIfrNaHm2FMNRI5Vo+G+qM1sCPcHi/i13kqng5o18L0+2Ti2Fz3/TVYbiGXQNwobKAQuzgGExYTPkvNfbOCoGt5MsT3SFPPMUhbCTn5/zuwhhF/CG7M46qfU3gVLJ1Szwq4d3wyeZshSSGZzs6l0vdDgK1ncaowxVuKTP0cXnSeuDGkZDmaGKk4LrGKdZfj7zcNPn68MSQbPP0GDOoYURSFEVAXwe4JkHRmfy96Zr4BoVr6abQTqoMOTVRhJbtu60ds/HKOY+bRp4aVJOVWdAz9fwbJOPgEQvFQne3bI3j/9NfamQFUd/I5Y9e89yt34BCyWvWeNKxmJj7swyhpk5tuPfHFw544ws5yjyAf5Nqgto3briYnkilLD74kotAGBgQzh+E/Grs2GFR8wNxWp0F0fXBFSubLFkbJ6JscJM9Qg2Wcu4nE0pAOrhppB7TffGVarLAtY/CpNZOF5YTL5IHHZGCalDmr4BJK15+lT8a660IA7hZDHW588v7cDdCLrAWNfSE5Ux3J6LCkbRBGw1YETzx1xdWOKLMCNWnGK/pNoWwRB616KVs=
+  app:
+    master: flask-template-staging
+    production: flask-template-production
+  on:
+    repo: derek-miller/flask-template
+  run:
+    - "python -m flask_template.manage upgrade"
+    - restart

@@ -18,9 +18,9 @@ initpys := $(foreach dir,$(wildcard $(project_dir)/*),$(wildcard $(dir)/__init__
 python_source_dirs := $(foreach initpy,$(initpys),$(realpath $(dir $(initpy))))
 $(info found python source in $(python_source_dirs))
 
-.PHONY: all init install check lint test test-unit test-integration build docs clean
+.PHONY: all init install check lint test test-unit test-integration build clean
 
-all: init install check build docs
+all: init install check build
 
 init:
 	pip install -i $(PIP_INDEX_URL) -U setuptools
@@ -58,9 +58,6 @@ test-unit:
 
 test-integration:
 	$(pytest) -k "not migrations" -m integration $(pytest_targets)
-
-docs:
-	sphinx-build -b html -d docs/_build/doctrees docs docs/_build/html
 
 build:
 	python setup.py egg_info --tag-build=.$(egg_info_tag_build) bdist_wheel --python-tag py27
