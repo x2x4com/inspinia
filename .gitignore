@@ -70,8 +70,9 @@ coverage.xml
 *.mo
 *.pot
 
-# Django stuff:
+# Django/Flask stuff:
 *.log
+.webassets-cache
 
 # Sphinx documentation
 docs/_build/
@@ -89,3 +90,11 @@ Status
 
 # Redis
 dump.rdb
+
+# Dynamically generated files
+**/static/css/vendor.min.css
+**/static/css/plugins.min.css
+**/static/css/style.min.css
+**/static/js/vendor.min.js
+**/static/js/plugins.min.js
+**/static/js/app.min.js

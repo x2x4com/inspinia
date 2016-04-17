@@ -24,6 +24,3 @@ deploy:
     production: flask-template-production
   on:
     repo: derek-miller/flask-template
-  run:
-    - "python -m flask_template.manage upgrade"
-    - restart
