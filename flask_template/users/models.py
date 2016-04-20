@@ -5,14 +5,13 @@ from flask_security import UserMixin, RoleMixin
 from sqlalchemy import func
 
 from ..core import db
-from ..helpers import JSONSerializer
 
 roles_users = db.Table('roles_users',
                        db.Column('user_id', db.Integer(), db.ForeignKey('users.id')),
                        db.Column('role_id', db.Integer(), db.ForeignKey('roles.id')))
 
 
-class Role(db.Model, RoleMixin, JSONSerializer):
+class Role(db.Model, RoleMixin):
     __tablename__ = 'roles'
 
     id = db.Column(db.Integer(), primary_key=True)  # pylint: disable=invalid-name
@@ -26,10 +25,8 @@ class Role(db.Model, RoleMixin, JSONSerializer):
         return self.name
 
 
-class User(db.Model, UserMixin, JSONSerializer):
+class User(db.Model, UserMixin):
     __tablename__ = 'users'
-    __json_hidden__ = ['password', 'last_login_ip', 'current_login_ip']
-    __json_modifiers__ = {'roles': lambda roles, model: [str(role) for role in roles]}
 
     id = db.Column(db.Integer(), primary_key=True)  # pylint: disable=invalid-name
     first_name = db.Column(db.String(255))

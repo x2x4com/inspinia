@@ -10,7 +10,7 @@ from flask import Flask
 from flask_security import Security, SQLAlchemyUserDatastore, user_registered
 from werkzeug.contrib.fixers import ProxyFix
 
-from .core import db, mail, sentry
+from .core import db, mail, cache, sentry
 from .forms import RegisterForm, ConfirmRegisterForm
 from .helpers import register_blueprints
 from .models import User, Role
@@ -23,7 +23,8 @@ def create_app(package_name, package_path, settings_override=None, register_secu
 
     db.init_app(app)
     mail.init_app(app)
-    sentry.init_app(app, dsn=app.config.get('SENTRY_DSN'), logging=True, level=logging.ERROR, wrap_wsgi=True)
+    cache.init_app(app)
+    sentry.init_app(app, logging=True, level=logging.ERROR, wrap_wsgi=True)
 
     user_datastore = SQLAlchemyUserDatastore(db, User, Role)
     Security(app, user_datastore,

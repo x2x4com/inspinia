@@ -7,10 +7,12 @@ factory-boy
 flask
 flask-admin
 flask-assets
+flask-cache
 flask-login
 flask-mail
 flask-migrate
 flask-principal
+flask-restless>=1.0.0b1
 flask-sqlalchemy
 flask-script
 flask-security

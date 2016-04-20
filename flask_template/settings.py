@@ -37,10 +37,15 @@ DEBUG = get_bool_env_var('DEBUG', True)
 APP_NAME = get_str_env_var('APP_NAME', 'Flask Template')
 SECRET_KEY = get_str_env_var('SECRET_KEY', 'secret-key')
 
+WTF_CSRF_ENABLED = False
+
 # SQLAlchemy config
 SQLALCHEMY_DATABASE_URI = get_str_env_var('SQLALCHEMY_DATABASE_URI',
                                           get_str_env_var('DATABASE_URL', 'postgresql://localhost:5432/flask_template'))
 SQLALCHEMY_TRACK_MODIFICATIONS = get_bool_env_var('SQLALCHEMY_TRACK_MODIFICATIONS', False)
+
+CACHE_TYPE = 'redis'
+CACHE_REDIS_URL = get_str_env_var('CACHE_REDIS_URL', get_str_env_var('REDIS_URL', 'redis://localhost:6379/0'))
 
 # Mail config
 MAIL_SERVER = get_str_env_var('MAIL_SERVER', get_str_env_var('POSTMARK_SMTP_SERVER'))
@@ -49,7 +54,7 @@ MAIL_USE_TLS = get_bool_env_var('MAIL_USE_TLS', True)
 MAIL_USE_SSL = get_bool_env_var('MAIL_USE_SSL', False)
 MAIL_USERNAME = get_str_env_var('MAIL_USERNAME', get_str_env_var('POSTMARK_API_KEY'))
 MAIL_PASSWORD = get_str_env_var('MAIL_PASSWORD', get_str_env_var('POSTMARK_API_KEY'))
-MAIL_DEFAULT_SENDER = get_str_env_var('MAIL_DEFAULT_SENDER', 'do-not-reply@dmiller.me')
+MAIL_DEFAULT_SENDER = get_str_env_var('MAIL_DEFAULT_SENDER', 'no-reply@localhost')
 MAIL_SUPPRESS_SEND = get_bool_env_var('MAIL_SUPPRESS_SEND', True)
 
 # Celery config
@@ -60,6 +65,7 @@ CELERYD_TASK_TIME_LIMIT = get_int_env_var('CELERYD_TASK_TIME_LIMIT', 60 * 60)
 CELERY_ENABLE_UTC = get_bool_env_var('CELERY_ENABLE_UTC', True)
 CELERY_MESSAGE_COMPRESSION = get_str_env_var('CELERY_MESSAGE_COMPRESSION', 'gzip')
 CELERY_RESULT_BACKEND = get_str_env_var('CELERY_RESULT_BACKEND')
+
 # Celery Mail config, defaults to the Mail config
 CELERY_SEND_TASK_ERROR_EMAILS = get_bool_env_var('CELERY_SEND_TASK_ERROR_EMAILS', False)
 ADMINS = [parse_email(admin) for admin in get_str_env_var('ADMINS', '').split(',') if admin.strip()]
@@ -90,7 +96,7 @@ SECURITY_POST_REGISTER_VIEW = get_str_env_var('SECURITY_POST_REGISTER_VIEW', '/l
 SECURITY_POST_CONFIRM_VIEW = get_str_env_var('SECURITY_POST_CONFIRM_VIEW', '/login')
 SECURITY_POST_RESET_VIEW = get_str_env_var('SECURITY_POST_RESET_VIEW', '/login')
 SECURITY_POST_CHANGE_VIEW = get_str_env_var('SECURITY_POST_CHANGE_VIEW', '/')
-SECURITY_UNAUTHORIZED_VIEW = get_str_env_var('SECURITY_UNAUTHORIZED_VIEW', None)
+SECURITY_UNAUTHORIZED_VIEW = get_str_env_var('SECURITY_UNAUTHORIZED_VIEW', lambda: None)
 SECURITY_FORGOT_PASSWORD_TEMPLATE = get_str_env_var('SECURITY_FORGOT_PASSWORD_TEMPLATE',
                                                     'security/forgot_password.html')
 SECURITY_LOGIN_USER_TEMPLATE = get_str_env_var('SECURITY_LOGIN_USER_TEMPLATE', 'security/login_user.html')
@@ -114,7 +120,7 @@ SECURITY_LOGIN_WITHIN = get_str_env_var('SECURITY_LOGIN_WITHIN', '1 days')
 SECURITY_CONFIRM_EMAIL_WITHIN = get_str_env_var('SECURITY_CONFIRM_EMAIL_WITHIN', '5 days')
 SECURITY_RESET_PASSWORD_WITHIN = get_str_env_var('SECURITY_RESET_PASSWORD_WITHIN', '5 days')
 SECURITY_LOGIN_WITHOUT_CONFIRMATION = get_bool_env_var('SECURITY_LOGIN_WITHOUT_CONFIRMATION', False)
-SECURITY_EMAIL_SENDER = get_str_env_var('SECURITY_EMAIL_SENDER', 'do-not-reply@dmiller.me')
+SECURITY_EMAIL_SENDER = get_str_env_var('SECURITY_EMAIL_SENDER', 'no-reply@localhost')
 SECURITY_TOKEN_AUTHENTICATION_KEY = get_str_env_var('SECURITY_TOKEN_AUTHENTICATION_KEY', 'auth_token')
 SECURITY_TOKEN_AUTHENTICATION_HEADER = get_str_env_var('SECURITY_TOKEN_AUTHENTICATION_HEADER', 'Authentication-Token')
 SECURITY_TOKEN_MAX_AGE = get_int_env_var('SECURITY_TOKEN_MAX_AGE', 60 * 60 * 24 * 365)
@@ -137,6 +143,8 @@ SECURITY_EMAIL_SUBJECT_PASSWORD_RESET = get_str_env_var('SECURITY_EMAIL_SUBJECT_
 
 # Sentry config
 SENTRY_DSN = os.environ.get('SENTRY_DSN')
+SENTRY_TRANSPORT = 'raven.transport.gevent.GeventedHTTPTransport'
+SENTRY_SITE_NAME = APP_NAME
 SENTRY_USER_ATTRS = [attr.strip()
                      for attr in get_str_env_var('SENTRY_USER_ATTRS', 'first_name, last_name, email').split(',')
                      if attr.strip()]

@@ -4,25 +4,23 @@ from __future__ import print_function, absolute_import, division, unicode_litera
 from functools import wraps
 
 from flask import jsonify, g
-from flask_security import login_required
 from werkzeug.exceptions import HTTPException
 
+from . import api_manager
 from .. import factory, tasks
-from ..helpers import JSONEncoder
 
 
 def create_app(settings_override=None, register_security_blueprint=False):
     app = factory.create_app(__name__, __path__, settings_override,
                              register_security_blueprint=register_security_blueprint)
 
+    api_manager.init_app(app)
+
     security_ctx = app.extensions['security']
 
     @security_ctx.send_mail_task
     def delay_security_email(msg):  # pylint: disable=unused-variable
         tasks.send_security_email.delay(msg)
-
-    # Set the default JSON encoder
-    app.json_encoder = JSONEncoder
 
     # Register custom error handlers so they all return JSON
     if not app.debug:
@@ -48,11 +46,9 @@ def handle_error(ex):
 def route(blueprint, *args, **kwargs):
     kwargs.setdefault('strict_slashes', False)
     kwargs.setdefault('methods', ['GET'])
-    auth = login_required if kwargs.pop('login_required', True) else lambda x: x
 
     def decorator(func):
         @blueprint.route(*args, **kwargs)
-        @auth
         @wraps(func)
         def wrapper(*args, **kwargs):  # pylint: disable=unused-variable
             status = headers = None

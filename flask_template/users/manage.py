@@ -69,6 +69,36 @@ def add_role(email=None, role=None):
 
 
 @user_manager.option('-e', '--email', dest='email')
+def activate(email=None):
+    email = email or prompt('Email')
+    user = users.first(email=email)
+    if not user:
+        print('No user found with email %s' % email)
+        return
+    if not user.active:
+        user.active = True
+        users.save(user)
+        print('Successfully activated %s' % repr(user))
+    else:
+        print('%s is already activated' % repr(user))
+
+
+@user_manager.option('-e', '--email', dest='email')
+def deactivate(email=None):
+    email = email or prompt('Email')
+    user = users.first(email=email)
+    if not user:
+        print('No user found with email %s' % email)
+        return
+    if user.active:
+        user.active = False
+        users.save(user)
+        print('Successfully deactivated %s' % repr(user))
+    else:
+        print('%s is already deactivated' % repr(user))
+
+
+@user_manager.option('-e', '--email', dest='email')
 @user_manager.option('-r', '--role', dest='role')
 def remove_role(email=None, role=None):
     email = email or prompt('Email')

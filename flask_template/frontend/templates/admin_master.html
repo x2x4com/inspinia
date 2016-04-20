@@ -16,6 +16,7 @@
                     {{ current_user.email }}
                 {%- endif %}<span class="caret"></span></a>
             <ul class="dropdown-menu" role="menu">
+                <li><a href="{{ url_for('app.index') }}">Landing Page</a></li>
                 <li><a href="{{ url_for_security('change_password', next=admin_view.url) }}">Change Password</a></li>
                 <li class="divider"></li>
                 <li><a href="{{ url_for_security('logout') }}">Logout</a></li>

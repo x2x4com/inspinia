@@ -1,8 +1,27 @@
 {% extends "base.html" %}
 
 {% block title %}Home | {{ super() }}{% endblock %}
-{% block page_body %}
-    <div>
-        <a href="{{ url_for('admin.index') }}">Go to admin!</a>
+
+{% block access_control %}
+    <div class="navbar-text btn-group pull-right">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+            <i class="fa fa-user glyphicon glyphicon-user"></i>
+            {% if current_user.first_name -%}
+                {{ current_user.first_name }}
+            {% else -%}
+                {{ current_user.email }}
+            {%- endif %}<span class="caret"></span></a>
+        <ul class="dropdown-menu" role="menu">
+            {% if current_user.has_role('admin') or current_user.has_role('superuser') %}
+            <li><a href="{{ url_for('admin.index') }}">Admin Control Panel</a></li>
+            {% endif %}
+
+            <li><a href="{{ url_for_security('change_password') }}">Change Password</a></li>
+            <li class="divider"></li>
+            <li><a href="{{ url_for_security('logout') }}">Logout</a></li>
+        </ul>
     </div>
+{% endblock access_control %}
+{% block body %}
+    <h1>Welcome to {{ config['APP_NAME'] }}!</h1>
 {% endblock %}

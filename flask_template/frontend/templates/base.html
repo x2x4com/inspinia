@@ -36,6 +36,26 @@
 <body>
 {% endblock %}
 {% block page_body %}
+    <div class="container">
+      <nav class="navbar navbar-default" role="navigation">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          {% block brand %}
+          <a class="navbar-brand" href="#">{{ config['APP_NAME'] }}</a>
+          {% endblock %}
+        </div>
+        <!-- navbar content -->
+        <div class="collapse navbar-collapse" id="admin-navbar-collapse">
+          {% block main_menu %}
+          {% endblock %}
+          {% block menu_links %}
+          {% endblock %}
+          {% block access_control %}
+          {% endblock %}
+        </div>
+      </nav>
+      {% block body %}{% endblock %}
+    </div>
 {% endblock %}
 {% block messages %}
 {% with messages = get_flashed_messages(with_categories=true) %}

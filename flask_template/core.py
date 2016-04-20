@@ -5,6 +5,7 @@ from flask import request, redirect
 from flask_admin.contrib import sqla
 from flask_admin.form import SecureForm
 from flask_admin.model import typefmt
+from flask_cache import Cache
 from flask_login import current_user
 from flask_mail import Mail
 from flask_security import url_for_security
@@ -16,6 +17,9 @@ db = SQLAlchemy()
 
 # Flask-Mail extension instance.
 mail = Mail()
+
+# Flask-Cache extension instance.
+cache = Cache()
 
 # Flask Sentry logging instance.
 sentry = Sentry()
@@ -81,7 +85,7 @@ class Service(object):
         """Returns a list of instances of the service's model with the specified
         ids.
 
-        :param *ids: instance ids
+        :param ids: instance ids
         """
         return self.__model__.query.filter(self.__model__.id.in_(ids)).all()
 
@@ -89,7 +93,7 @@ class Service(object):
         """Returns a list of instances of the service's model filtered by the
         specified key word arguments.
 
-        :param **kwargs: filter parameters
+        :param kwargs: filter parameters
         """
         return self.__model__.query.filter_by(**kwargs)
 
@@ -97,7 +101,7 @@ class Service(object):
         """Returns the first instance found of the service's model filtered by
         the specified key word arguments.
 
-        :param **kwargs: filter parameters
+        :param kwargs: filter parameters
         """
         return self.find(**kwargs).first()
 
@@ -112,14 +116,14 @@ class Service(object):
     def new(self, **kwargs):
         """Returns a new, unsaved instance of the service's model class.
 
-        :param **kwargs: instance parameters
+        :param kwargs: instance parameters
         """
         return self.__model__(**self._preprocess_params(kwargs))  # pylint: disable=not-callable
 
     def create(self, **kwargs):
         """Returns a new, saved instance of the service's model class.
 
-        :param **kwargs: instance parameters
+        :param kwargs: instance parameters
         """
         return self.save(self.new(**kwargs))
 
@@ -131,7 +135,7 @@ class Service(object):
         """Returns an updated instance of the service's model class.
 
         :param model: the model to update
-        :param **kwargs: update parameters
+        :param kwargs: update parameters
         """
         self._isinstance(model)
         for key, value in self._preprocess_params(kwargs).items():
@@ -152,7 +156,7 @@ class Service(object):
         """Returns a new, saved instance of the service's model class if ``kwargs['id']`` does not exist in the db.
         Otherwise, the existing entry is updated with the values in ``kwargs``.
 
-        :param **kwargs: instance parameters
+        :param kwargs: instance parameters
         """
         model = self.get(kwargs.get('id', ''))
         if model:
