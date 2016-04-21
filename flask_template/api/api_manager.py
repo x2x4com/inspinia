@@ -46,17 +46,16 @@ all_methods = {'GET', 'POST', 'PUT', 'PATCH', 'DELETE'}
 
 
 def init_app(app):
-    with app.app_context():
-        manager = APIManager(app, flask_sqlalchemy_db=db)
-        manager.create_api(User,
-                           preprocessors=admin_only_preprocessors,
-                           url_prefix='',
-                           methods=all_methods,
-                           max_page_size=100,
-                           exclude=('password',))
-        manager.create_api(Role,
-                           preprocessors=admin_only_preprocessors,
-                           url_prefix='',
-                           methods=all_methods,
-                           max_page_size=100)
-        app.logger.addFilter(ProcessingExceptionFilter())
+    manager = APIManager(app, flask_sqlalchemy_db=db)
+    manager.create_api(User,
+                       preprocessors=admin_only_preprocessors,
+                       url_prefix='',
+                       methods=all_methods,
+                       max_page_size=100,
+                       exclude=('password',))
+    manager.create_api(Role,
+                       preprocessors=admin_only_preprocessors,
+                       url_prefix='',
+                       methods=all_methods,
+                       max_page_size=100)
+    app.logger.addFilter(ProcessingExceptionFilter())
