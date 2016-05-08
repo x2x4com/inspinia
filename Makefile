@@ -78,7 +78,7 @@ test-integration:
 	$(pytest) -m integration $(pytest_targets)
 
 build:
-	python setup.py egg_info --tag-build=+$(egg_info_tag_build) bdist_wheel --python-tag py27
+	python setup.py egg_info --tag-build=+build$(egg_info_tag_build) bdist_wheel --python-tag py27
 
 clean:
 	find $(project_dir) -name '*.pyc' -print -exec rm -r -- {} +
