@@ -60,7 +60,7 @@ check: lint test
 lint:
 	PYTHONPATH="$(project_dir)" pylint --rcfile="$(project_dir)/pylintrc" --reports=n $(foreach dir,$(python_source_dirs), "$(dir)")
 
-pytest_args := -v -l --doctest-modules$(foreach dir,$(python_source_dirs), --ignore="$(dir)/migrations/")
+pytest_args := -v -l$(foreach dir,$(python_source_dirs), --ignore="$(dir)/migrations/")
 pytest_cov := $(foreach dir,$(python_source_dirs), --cov="$(dir)") --cov-report=term-missing --cov-report=html --no-cov-on-fail
 pytest := PYTHONPATH="$(project_dir)" py.test $(pytest_args)
 pytest_targets := "$(project_dir)/tests/" $(foreach dir,$(python_source_dirs), "$(dir)")
@@ -78,7 +78,7 @@ test-integration:
 	$(pytest) -m integration $(pytest_targets)
 
 build:
-	python setup.py egg_info --tag-build=.$(egg_info_tag_build) bdist_wheel --python-tag py27
+	python setup.py egg_info --tag-build=+$(egg_info_tag_build) bdist_wheel --python-tag py27
 
 clean:
 	find $(project_dir) -name '*.pyc' -print -exec rm -r -- {} +
