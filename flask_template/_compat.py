@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 try:
-    from importlib import import_module
+    from importlib import import_module  # pylint: disable=unused-import
 except ImportError:
     # While not critical (and in no way guaranteed!), it would be nice to keep this
     # code compatible with Python 2.3.
@@ -12,7 +12,7 @@ except ImportError:
         if not hasattr(package, 'rindex'):
             raise ValueError("'package' not set to a string")
         dot = len(package)
-        for x in xrange(level, 1, -1):
+        for _ in xrange(level, 1, -1):
             try:
                 dot = package.rindex('.', 0, dot)
             except ValueError:
