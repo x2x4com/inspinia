@@ -61,12 +61,12 @@ lint:
 	PYTHONPATH="$(project_dir)" pylint --rcfile="$(project_dir)/pylintrc" --reports=n $(foreach dir,$(python_source_dirs), "$(dir)")
 
 pytest_args := -v -l --doctest-modules$(foreach dir,$(python_source_dirs), --ignore="$(dir)/migrations/")
-pytest_cov := $(foreach dir,$(python_source_dirs),) --cov-report=term-missing --cov-report=html --no-cov-on-fail
+pytest_cov := $(foreach dir,$(python_source_dirs), --cov="$(dir)") --cov-report=term-missing --cov-report=html --no-cov-on-fail
 pytest := PYTHONPATH="$(project_dir)" py.test $(pytest_args)
 pytest_targets := "$(project_dir)/tests/" $(foreach dir,$(python_source_dirs), "$(dir)")
 
 test-tox:
-	tox -- $(pytest_args) $(pytest_cov) $(pytest_targets)
+	PYTHON_MAJOR_VERSION=$(python_version_major) tox -- $(pytest_args) $(pytest_cov) $(pytest_targets)
 
 test:
 	$(pytest) $(pytest_cov) $(pytest_targets)
