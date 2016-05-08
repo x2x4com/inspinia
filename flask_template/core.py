@@ -186,7 +186,7 @@ class BaseModelView(sqla.ModelView):
     can_view_details = True
     column_display_pk = True
     column_default_sort = 'id'
-    column_type_formatters = dict(typefmt.BASE_FORMATTERS.items() + [(type(None), typefmt.null_formatter), ])
+    column_type_formatters = dict(list(typefmt.BASE_FORMATTERS.items()) + [(type(None), typefmt.null_formatter), ])
     create_modal = False
     details_modal = True
     edit_modal = False
