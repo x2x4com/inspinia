@@ -3,6 +3,7 @@
 import ast
 import os
 import re
+import sys
 
 from pip.req import parse_requirements
 from setuptools import setup, find_packages
@@ -23,6 +24,7 @@ for line in ast.parse(read('flask_template', '__init__.py')).body:
     special_members[line.targets[0].id] = line.value.s
 
 pkg_name = special_members['__pkg_name__']
+py_version = sys.version_info[0]
 
 setup(
     name=pkg_name,
@@ -46,7 +48,6 @@ setup(
         'Operating System :: OS Independent',
         'Programming Language :: Python',
         'Programming Language :: Python :: 2',
-        'Programming Language :: Python :: 2.6',
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.3',
@@ -55,8 +56,9 @@ setup(
         'Topic :: Database :: Database Engines/Servers',
         'Topic :: Database :: Front-Ends'
     ],
-    install_requires=[str(x.req) for x in parse_requirements('install-requirements.txt', session=False)],
-    tests_require=[str(x.req) for x in parse_requirements('requirements.txt', session=False)],
+    install_requires=[str(x.req) for x in parse_requirements('install-requirements-py%d.txt' % py_version,
+                                                             session=False)],
+    tests_require=[str(x.req) for x in parse_requirements('requirements-py%d.txt' % py_version, session=False)],
     include_package_data=True,
     zip_safe=False
 )

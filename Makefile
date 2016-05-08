@@ -18,6 +18,12 @@ initpys := $(foreach dir,$(wildcard $(project_dir)/*),$(wildcard $(dir)/__init__
 python_source_dirs := $(foreach initpy,$(initpys),$(realpath $(dir $(initpy))))
 $(info found python source in $(python_source_dirs))
 
+python_version_full := $(wordlist 2,4,$(subst ., ,$(shell python --version 2>&1)))
+python_version_major := $(word 1,${python_version_full})
+python_version_minor := $(word 2,${python_version_full})
+python_version_patch := $(word 3,${python_version_full})
+$(info using python$(python_version_major))
+
 .PHONY: all init install check lint test test-tox test-unit test-integration build clean
 
 all: init install check build
@@ -28,8 +34,8 @@ init:
 	pip install -i $(PIP_INDEX_URL) -U pip-tools
 	mkdir -p tests/reports
 
-install: requirements.txt
-	pip-sync -i $(PIP_INDEX_URL)
+install: requirements-py$(python_version_major).txt
+	pip-sync -i $(PIP_INDEX_URL) requirements-py$(python_version_major).txt
 
 PIP_COMPILE_UPGRADE ?= 0
 ifneq ($(PIP_COMPILE_UPGRADE),0)
@@ -37,11 +43,17 @@ pip_compile_flags += --upgrade
 endif
 pip_compile = pip-compile -i $(PIP_INDEX_URL) $(pip_compile_flags)
 
-requirements.txt: requirements.in install-requirements.txt
-	$(pip_compile) requirements.in
+requirements-py2.txt: requirements/python2.in install-requirements-py2.txt
+	$(pip_compile) requirements/python2.in -o requirements-py2.txt
 
-install-requirements.txt: install-requirements.in
-	$(pip_compile) install-requirements.in
+install-requirements-py2.txt: requirements/install-python2.in
+	$(pip_compile) requirements/install-python2.in -o install-requirements-py2.txt
+
+requirements-py3.txt: requirements/python3.in install-requirements-py3.txt
+	$(pip_compile) requirements/python3.in -o requirements-py3.txt
+
+install-requirements-py3.txt: requirements/install-python3.in
+	$(pip_compile) requirements/install-python3.in -o install-requirements-py3.txt
 
 check: lint test
 

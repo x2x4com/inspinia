@@ -28,4 +28,3 @@ recordtype
 redis
 requests[security]
 sqlalchemy
-wsgiref

@@ -1,0 +1,2 @@
+-r install-python2.in
+-r common-test.in
