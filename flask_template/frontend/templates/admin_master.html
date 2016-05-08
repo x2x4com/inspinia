@@ -10,8 +10,8 @@
         <div class="navbar-text btn-group pull-right">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                 <i class="fa fa-user glyphicon glyphicon-user"></i>
-                {% if current_user.first_name -%}
-                    {{ current_user.first_name }}
+                {% if current_user.first_name and current_user.last_name -%}
+                    {{ current_user.first_name }} {{ current_user.last_name }}
                 {% else -%}
                     {{ current_user.email }}
                 {%- endif %}<span class="caret"></span></a>

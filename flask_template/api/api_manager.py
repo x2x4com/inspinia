@@ -18,11 +18,13 @@ class ProcessingExceptionFilter(logging.Filter):
         return True
 
 
+# noinspection PyUnusedLocal
 def auth_func(*args, **kwargs):  # pylint: disable=unused-argument
     if auth_required('token')(lambda: None)() is not None:
         raise ProcessingException(status=401, detail='Unauthorized')
 
 
+# noinspection PyUnusedLocal
 def admin_or_superuser(*args, **kwargs):  # pylint: disable=unused-argument
     if roles_accepted('admin', 'superuser')(lambda: None)():
         raise ProcessingException(status=403, detail='Forbidden')
@@ -42,7 +44,7 @@ admin_only_preprocessors = dict(
     PATCH_RELATIONSHIP=[auth_func, admin_or_superuser],  # /api/user/1/relationships/articles
 )
 
-all_methods = {'GET', 'POST', 'PUT', 'PATCH', 'DELETE'}
+all_methods = set(['GET', 'POST', 'PUT', 'PATCH', 'DELETE'])
 
 
 def init_app(app):

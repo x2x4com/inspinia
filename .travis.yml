@@ -1,6 +1,10 @@
 language: python
 python:
+  - 2.6
   - 2.7
+  - 3.3
+  - 3.4
+  - 3.5
 env:
   - DATABASE_URL="postgresql://localhost:5432/travis_ci_test" REDIS_URL="redis://localhost:6379/0"
 services:
@@ -9,11 +13,13 @@ services:
 install:
   - make init
   - make install
+  - pip install tox-travis
 before_script:
   - psql -c 'create database travis_ci_test;' -U postgres
 script:
   - make lint
   - make test
+  - make test-tox
   - make build
 deploy:
   provider: heroku

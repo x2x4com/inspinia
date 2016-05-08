@@ -55,8 +55,9 @@ mock==1.3.0
 ndg-httpsclient==0.4.0
 passlib==1.6.5
 pbr==1.8.1                # via mock
+pluggy==0.3.1             # via tox
 psycopg2==2.6.1
-py==1.4.31                # via pytest
+py==1.4.31                # via pytest, tox
 pyasn1==0.1.9
 pycparser==2.14
 pygments==2.1.3
@@ -74,6 +75,8 @@ redis==2.10.5
 requests[security]==2.9.1
 six==1.10.0
 sqlalchemy==1.0.12
+tox==2.3.1
+virtualenv==15.0.1        # via tox
 webassets==0.11.1
 werkzeug==0.11.5
 wrapt==1.10.8             # via astroid

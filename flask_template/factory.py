@@ -32,8 +32,9 @@ def create_app(package_name, package_path, settings_override=None, register_secu
              register_form=RegisterForm,
              confirm_register_form=ConfirmRegisterForm)
 
+    # noinspection PyUnusedLocal
     @user_registered.connect_via(app)
-    def user_registered_sighandler(app, user, confirm_token):  # pylint: disable=unused-argument,unused-variable
+    def user_registered_sighandler(_app, user, confirm_token):  # pylint: disable=unused-argument,unused-variable
         # Add default user role
         user_datastore.add_role_to_user(user, user_datastore.find_role('user'))
         db.session.add(user)
@@ -46,13 +47,14 @@ def create_app(package_name, package_path, settings_override=None, register_secu
 
 def create_celery_app(app=None):
     app = app or create_app(__name__, os.path.dirname(__file__))
-    celery_app = celery.Celery(__package__)
+    celery_app = celery.Celery()
 
+    # noinspection PyUnusedLocal
     def on_configure(self):  # pylint: disable=unused-argument
         import raven
         from raven.contrib.celery import register_signal, register_logger_signal
 
-        client = raven.Client(app.config.get('SENTRY_DSN'))
+        client = raven.Client()
 
         # register a custom filter to filter out duplicate logs
         register_logger_signal(client)
@@ -62,15 +64,15 @@ def create_celery_app(app=None):
 
     celery_app.on_configure = functools.partial(on_configure, celery_app)
     celery_app.conf.update(app.config)
-    TaskBase = celery_app.Task  # pylint: disable=invalid-name
+    task_base = celery_app.Task
 
-    class ContextTask(TaskBase):
+    class ContextTask(task_base):
         abstract = True
 
         def __call__(self, *args, **kwargs):
             # Run tasks in context of the flask app
             with app.app_context():
-                return TaskBase.__call__(self, *args, **kwargs)
+                return task_base.__call__(self, *args, **kwargs)
 
     celery_app.Task = ContextTask  # pylint: disable=invalid-name
 

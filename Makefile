@@ -18,7 +18,7 @@ initpys := $(foreach dir,$(wildcard $(project_dir)/*),$(wildcard $(dir)/__init__
 python_source_dirs := $(foreach initpy,$(initpys),$(realpath $(dir $(initpy))))
 $(info found python source in $(python_source_dirs))
 
-.PHONY: all init install check lint test test-unit test-integration build clean
+.PHONY: all init install check lint test test-tox test-unit test-integration build clean
 
 all: init install check build
 
@@ -26,6 +26,7 @@ init:
 	pip install -i $(PIP_INDEX_URL) -U setuptools
 	pip install -i $(PIP_INDEX_URL) -U pip
 	pip install -i $(PIP_INDEX_URL) -U pip-tools
+	mkdir -p tests/reports
 
 install: requirements.txt
 	pip-sync -i $(PIP_INDEX_URL)
@@ -45,10 +46,14 @@ install-requirements.txt: install-requirements.in
 check: lint test
 
 lint:
-	PYTHONPATH=$(project_dir) pylint --rcfile=$(project_dir)/pylintrc --reports=n $(python_source_dirs)
+	PYTHONPATH="$(project_dir)" pylint --rcfile="$(project_dir)/pylintrc" --reports=n $(foreach dir,$(python_source_dirs), "$(dir)")
 
-pytest := PYTHONPATH=$(project_dir) py.test -v -l --doctest-modules$(foreach dir,$(python_source_dirs), --ignore="$(dir)/migrations/")
-pytest_targets := $(project_dir)/tests/ $(python_source_dirs)
+pytest_args := -v -l --doctest-modules$(foreach dir,$(python_source_dirs), --ignore="$(dir)/migrations/")
+pytest := PYTHONPATH="$(project_dir)" py.test $(pytest_args)
+pytest_targets := "$(project_dir)/tests/" $(foreach dir,$(python_source_dirs), "$(dir)")
+
+test-tox:
+	tox -- $(pytest_args) $(pytest_targets)
 
 test:
 	$(pytest)$(foreach dir,$(python_source_dirs), --cov="$(dir)") --cov-report=term-missing $(pytest_targets)
@@ -57,7 +62,7 @@ test-unit:
 	$(pytest) -m "not integration" $(pytest_targets)
 
 test-integration:
-	$(pytest) -k "not migrations" -m integration $(pytest_targets)
+	$(pytest) -m integration $(pytest_targets)
 
 build:
 	python setup.py egg_info --tag-build=.$(egg_info_tag_build) bdist_wheel --python-tag py27

@@ -29,7 +29,7 @@ def parse_email(raw_string):
     match = email_pattern.match(raw_string.strip())
     if match:
         return match.group(1), match.group(2)
-    raise ValueError('Invalid email "{}". Ex. "Jane Doe <jane@example.com>"'.format(raw_string))
+    raise ValueError('Invalid email "{}". Ex: "Jane Doe <jane@example.com>"'.format(raw_string))
 
 
 # App config
@@ -79,7 +79,7 @@ EMAIL_USE_TLS = get_bool_env_var('EMAIL_USE_TLS', MAIL_USE_TLS)
 
 # Security config
 SECURITY_BLUEPRINT_NAME = get_str_env_var('SECURITY_BLUEPRINT_NAME', 'security')
-SECURITY_URL_PREFIX = get_str_env_var('SECURITY_URL_PREFIX', None)
+SECURITY_URL_PREFIX = get_str_env_var('SECURITY_URL_PREFIX')
 SECURITY_FLASH_MESSAGES = get_bool_env_var('SECURITY_FLASH_MESSAGES', True)
 SECURITY_PASSWORD_HASH = get_str_env_var('SECURITY_PASSWORD_HASH', 'sha512_crypt')
 SECURITY_PASSWORD_SALT = get_str_env_var('SECURITY_PASSWORD_SALT', 'password-salt')
@@ -89,7 +89,7 @@ SECURITY_REGISTER_URL = get_str_env_var('SECURITY_REGISTER_URL', '/register')
 SECURITY_RESET_URL = get_str_env_var('SECURITY_RESET_URL', '/reset-password')
 SECURITY_CHANGE_URL = get_str_env_var('SECURITY_CHANGE_URL', '/change-password')
 SECURITY_CONFIRM_URL = get_str_env_var('SECURITY_CONFIRM_URL', '/confirm-account')
-SECURITY_CONFIRM_ERROR_VIEW = get_str_env_var('SECURITY_CONFIRM_ERROR_VIEW', None)
+SECURITY_CONFIRM_ERROR_VIEW = get_str_env_var('SECURITY_CONFIRM_ERROR_VIEW')
 SECURITY_POST_LOGIN_VIEW = get_str_env_var('SECURITY_POST_LOGIN_VIEW', '/')
 SECURITY_POST_LOGOUT_VIEW = get_str_env_var('SECURITY_POST_LOGOUT_VIEW', '/login')
 SECURITY_POST_REGISTER_VIEW = get_str_env_var('SECURITY_POST_REGISTER_VIEW', '/login')
@@ -143,13 +143,20 @@ SECURITY_EMAIL_SUBJECT_PASSWORD_RESET = get_str_env_var('SECURITY_EMAIL_SUBJECT_
 
 # Sentry config
 SENTRY_DSN = os.environ.get('SENTRY_DSN')
-SENTRY_TRANSPORT = 'raven.transport.gevent.GeventedHTTPTransport'
 SENTRY_SITE_NAME = APP_NAME
-SENTRY_USER_ATTRS = [attr.strip()
-                     for attr in get_str_env_var('SENTRY_USER_ATTRS', 'first_name, last_name, email').split(',')
-                     if attr.strip()]
+SENTRY_TRANSPORT = 'raven.transport.gevent.GeventedHTTPTransport'
+SENTRY_USER_ATTRS = [attr.strip() for attr in get_str_env_var('SENTRY_USER_ATTRS', '').split(',') if attr.strip()]
 
 if __name__ == '__main__':
-    print('\n'.join('{}={}'.format(prop, globals()[prop])
-                    for prop in sorted(globals().keys())
-                    if re.match(r'[A-Z][A-Z0-9_]+', prop)))
+    import sys
+
+    config = dict([(attr, globals()[attr])
+                   for attr in sorted(globals().keys())
+                   if re.match(r'[A-Z][A-Z0-9_]+', attr)])
+    if len(sys.argv) == 2:
+        if sys.argv[1] not in config:
+            print('No config option with name "{}"'.format(sys.argv[1]))
+        else:
+            print(config[sys.argv[1]])
+    else:
+        print('\n'.join('{}={}'.format(k, v) for k, v in config.items()))

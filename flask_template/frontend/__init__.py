@@ -24,6 +24,7 @@ def create_app(settings_override=None):
     # Init admin
     admin.init_app(app)
 
+    # Setup security async email send
     security_ctx = app.extensions['security']
 
     @security_ctx.send_mail_task
@@ -49,8 +50,8 @@ def route(blueprint, *args, **kwargs):
     def decorator(func):
         @blueprint.route(*args, **kwargs)
         @wraps(func)
-        def wrapper(*args, **kwargs):  # pylint: disable=unused-variable
-            return func(*args, **kwargs)
+        def wrapper(*func_args, **func_kwargs):  # pylint: disable=unused-variable
+            return func(*func_args, **func_kwargs)
 
         return func
 

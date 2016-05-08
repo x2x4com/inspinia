@@ -11,11 +11,12 @@ from .. import factory, tasks
 
 
 def create_app(settings_override=None, register_security_blueprint=False):
-    app = factory.create_app(__name__, __path__, settings_override,
-                             register_security_blueprint=register_security_blueprint)
+    app = factory.create_app(__name__, __path__, settings_override, register_security_blueprint)
 
+    # Init API endpoints for models
     api_manager.init_app(app)
 
+    # Setup security async email send
     security_ctx = app.extensions['security']
 
     @security_ctx.send_mail_task
@@ -50,9 +51,9 @@ def route(blueprint, *args, **kwargs):
     def decorator(func):
         @blueprint.route(*args, **kwargs)
         @wraps(func)
-        def wrapper(*args, **kwargs):  # pylint: disable=unused-variable
+        def wrapper(*func_args, **func_kwargs):  # pylint: disable=unused-variable
             status = headers = None
-            rv = func(*args, **kwargs)
+            rv = func(*func_args, **func_kwargs)
             if isinstance(rv, tuple):
                 rv, status, headers = rv + (None,) * (3 - len(rv))
             return jsonify(rv), status, headers
