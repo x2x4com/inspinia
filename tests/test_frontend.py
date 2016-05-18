@@ -3,9 +3,9 @@ import pytest
 
 
 @pytest.mark.integration
-def test_fake_int(api_app):
+def test_fake_int(frontend_app):
     assert True
 
 
-def test_fake_unit(api_app):
+def test_fake_unit(frontend_app):
     assert True

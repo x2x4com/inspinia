@@ -12,7 +12,7 @@ except ImportError:
         if not hasattr(package, 'rindex'):
             raise ValueError("'package' not set to a string")
         dot = len(package)
-        for _ in xrange(level, 1, -1):
+        for _ in xrange(level, 1, -1):  # pylint: disable=undefined-variable
             try:
                 dot = package.rindex('.', 0, dot)
             except ValueError:
