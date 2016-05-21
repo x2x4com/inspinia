@@ -16,7 +16,7 @@ celery==3.1.23
 cffi==1.6.0               # via cryptography
 colorama==0.3.7           # via pylint
 contextlib2==0.5.3        # via raven
-coverage==4.0.3           # via pytest-cov
+coverage==4.1             # via pytest-cov
 cryptography==1.3.2       # via pyopenssl
 cssmin==0.2.0
 docutils==0.12
@@ -37,7 +37,7 @@ flask-wtf==0.12
 flask==0.10.1
 gevent==1.1.1
 greenlet==0.4.9           # via gevent
-gunicorn==19.4.5
+gunicorn==19.5.0
 honcho==0.7.1
 idna==2.1                 # via cryptography
 itsdangerous==0.24        # via flask, flask-security
@@ -59,25 +59,25 @@ pyasn1==0.1.9             # via cryptography, requests
 pycparser==2.14           # via cffi
 pygments==2.1.3
 pylint==1.5.5
-PyOpenSSL==16.0.0         # via ndg-httpsclient, requests
+pyOpenSSL==16.0.0         # via ndg-httpsclient, requests
 pytest-cov==2.2.1
 pytest==2.9.1
 python-dateutil==2.5.3
 python-editor==1.0        # via alembic
 python-mimeparse==1.5.2   # via mimerender
 pytz==2016.4              # via celery
-raven[flask]==5.15.0
+raven[flask]==5.18.0
 recordtype==1.1
 redis==2.10.5
 requests[security]==2.10.0
 six==1.10.0               # via astroid, cryptography, fake-factory, mock, pylint, pyopenssl, python-dateutil
-sqlalchemy==1.0.12
+sqlalchemy==1.0.13
 tox==2.3.1
 virtualenv==15.0.1        # via tox
 webassets==0.11.1         # via flask-assets
 Werkzeug==0.11.9          # via flask, flask-wtf
 wrapt==1.10.8             # via astroid
-wtforms==2.1              # via flask-admin, flask-wtf
+WTForms==2.1              # via flask-admin, flask-wtf
 
 # The following packages are commented out because they are
 # considered to be unsafe in a requirements file:
