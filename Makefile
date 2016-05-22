@@ -58,7 +58,9 @@ install-requirements-py3.txt: requirements/install-python3.in
 check: lint test
 
 lint:
+ifeq ($(python_version_major),2)
 	PYTHONPATH="$(project_dir)" pylint --rcfile="$(project_dir)/pylintrc" --reports=n $(foreach dir,$(python_source_dirs), "$(dir)")
+endif
 
 pytest_args := -v -l$(foreach dir,$(python_source_dirs), --ignore="$(dir)/migrations/")
 pytest_cov := $(foreach dir,$(python_source_dirs), --cov="$(dir)") --cov-report=term-missing --cov-report=html --no-cov-on-fail
