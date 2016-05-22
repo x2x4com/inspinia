@@ -1,4 +1,10 @@
 # flask-template
+[![Build Status](https://img.shields.io/travis/derek-miller/flask-template.svg)](https://travis-ci.org/derek-miller/flask-template)
+[![GitHub release](https://img.shields.io/github/release/derek-miller/flask-template.svg)]()
+[![Requires.io](https://img.shields.io/requires/github/derek-miller/flask-template.svg)](https://requires.io/github/derek-miller/flask-template/requirements/?branch=master)
+[![Codecov](https://img.shields.io/codecov/c/github/derek-miller/flask-template.svg)](https://codecov.io/gh/derek-miller/flask-template)
+[![GitHub issues](https://img.shields.io/github/issues/derek-miller/flask-template.svg)](https://github.com/derek-miller/flask-template/issues)
+[![license](https://img.shields.io/github/license/derek-miller/flask-template.svg)](https://github.com/derek-miller/flask-template/blob/master/LICENSE)
 
 Template flask application using Flask-Admin, Flask-Security, SQLAlchemy, Sentry, and Celery among other common flask
 extensions.
