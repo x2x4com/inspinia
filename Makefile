@@ -66,7 +66,7 @@ pytest_args := -v -l$(foreach dir,$(python_source_dirs), --ignore="$(dir)/migrat
 pytest_cov := $(foreach dir,$(python_source_dirs), --cov="$(dir)") --cov-report=term-missing --cov-report=html --no-cov-on-fail
 pytest := PYTHONPATH="$(project_dir)" py.test $(pytest_args)
 pytest_targets := "$(project_dir)/tests/" $(foreach dir,$(python_source_dirs), "$(dir)")
-tox := PYTHONPATH="$(project_dir)" PYTHON_MAJOR_VERSION=$(python_version_major) tox
+tox := PYTHONPATH="$(project_dir)" tox
 
 test-tox:
 	$(tox) -- $(pytest_args) $(pytest_cov) $(pytest_targets)
