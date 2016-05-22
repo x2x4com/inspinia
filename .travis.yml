@@ -22,7 +22,7 @@ script:
   - make test-tox
   - make build
 after_success:
-  - codecov
+  - codecov --required --file tests/reports/coverage.xml
 deploy:
   provider: heroku
   api_key:

@@ -12,3 +12,6 @@ exclude_lines =
 
 [html]
 directory = tests/reports/htmlcov
+
+[xml]
+output = tests/reports/coverage.xml
