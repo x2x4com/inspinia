@@ -34,14 +34,14 @@ def parse_email(raw_string):
 
 # App config
 DEBUG = get_bool_env_var('DEBUG', True)
-APP_NAME = get_str_env_var('APP_NAME', 'Flask Template')
+APP_NAME = get_str_env_var('APP_NAME', 'Inspinia')
 SECRET_KEY = get_str_env_var('SECRET_KEY', 'secret-key')
 
 WTF_CSRF_ENABLED = False
 
 # SQLAlchemy config
 SQLALCHEMY_DATABASE_URI = get_str_env_var('SQLALCHEMY_DATABASE_URI',
-                                          get_str_env_var('DATABASE_URL', 'postgresql://localhost:5432/flask_template'))
+                                          get_str_env_var('DATABASE_URL', 'postgresql://localhost:5432/inspinia'))
 SQLALCHEMY_TRACK_MODIFICATIONS = get_bool_env_var('SQLALCHEMY_TRACK_MODIFICATIONS', False)
 
 CACHE_TYPE = 'redis'

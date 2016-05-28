@@ -1,6 +1,6 @@
-recursive-include flask_template/frontend/templates *
-recursive-include flask_template/frontend/static *
-recursive-include flask_template/migrations *
+recursive-include inspinia/frontend/templates *
+recursive-include inspinia/frontend/static *
+recursive-include inspinia/migrations *
 include install-requirements-py3.txt
 include requirements-py3.txt
 include install-requirements-py2.txt

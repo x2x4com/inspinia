@@ -14,7 +14,7 @@ if [ -f bin/install_nodejs ]; then
     npm install -g less
 fi
 
-python -m flask_template.manage db upgrade
-python -m flask_template.manage assets build
+python -m inspinia.manage db upgrade
+python -m inspinia.manage assets build
 
 echo "-----> Post-compile done"

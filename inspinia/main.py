@@ -4,7 +4,7 @@ from __future__ import print_function, absolute_import, division, unicode_litera
 from werkzeug.serving import run_simple
 from werkzeug.wsgi import DispatcherMiddleware
 
-from flask_template import api, frontend
+from inspinia import api, frontend
 
 frontend_app = frontend.create_app()
 api_app = api.create_app()

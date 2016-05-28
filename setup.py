@@ -15,7 +15,7 @@ def read(*names):
 
 
 special_members = {}
-for line in ast.parse(read('flask_template', '__init__.py')).body:
+for line in ast.parse(read('inspinia', '__init__.py')).body:
     if (not isinstance(line, ast.Assign) or len(line.targets) != 1 or
             not isinstance(line.targets[0], ast.Name) or
             not re.match(r'__.*?__', line.targets[0].id) or

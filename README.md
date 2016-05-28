@@ -1,13 +1,11 @@
-# flask-template
-[![Build Status](https://img.shields.io/travis/derek-miller/flask-template.svg)](https://travis-ci.org/derek-miller/flask-template)
-[![GitHub release](https://img.shields.io/github/release/derek-miller/flask-template.svg)]()
-[![Requires.io](https://img.shields.io/requires/github/derek-miller/flask-template.svg)](https://requires.io/github/derek-miller/flask-template/requirements/?branch=master)
-[![Codecov](https://img.shields.io/codecov/c/github/derek-miller/flask-template.svg)](https://codecov.io/gh/derek-miller/flask-template)
-[![GitHub issues](https://img.shields.io/github/issues/derek-miller/flask-template.svg)](https://github.com/derek-miller/flask-template/issues)
-[![license](https://img.shields.io/github/license/derek-miller/flask-template.svg)](https://github.com/derek-miller/flask-template/blob/master/LICENSE)
+# inspinia
+[![Build Status](https://img.shields.io/travis/derek-miller/inspinia.svg)](https://travis-ci.org/derek-miller/inspinia)
+[![GitHub release](https://img.shields.io/github/release/derek-miller/inspinia.svg)]()
+[![Requires.io](https://img.shields.io/requires/github/derek-miller/inspinia.svg)](https://requires.io/github/derek-miller/inspinia/requirements/?branch=master)
+[![Codecov](https://img.shields.io/codecov/c/github/derek-miller/inspinia.svg)](https://codecov.io/gh/derek-miller/inspinia)
+[![GitHub issues](https://img.shields.io/github/issues/derek-miller/inspinia.svg)](https://github.com/derek-miller/inspinia/issues)
+[![license](https://img.shields.io/github/license/derek-miller/inspinia.svg)](https://github.com/derek-miller/inspinia/blob/master/LICENSE)
 
-Template flask application using Flask-Admin, Flask-Security, SQLAlchemy, Sentry, and Celery among other common flask
-extensions.
 
 ***
 
@@ -16,8 +14,8 @@ extensions.
 > Due to a pinned install requirements, it is recommended you use a virtualenv
 
 ```bash
-git clone https://github.com/derek-miller/flask-template.git
-cd flask-template
+git clone https://github.com/derek-miller/inspinia.git
+cd inspinia
 python setup.py install
 ```
 
@@ -31,8 +29,8 @@ This project uses Postgres so make sure you have it installed first. Then you ca
 commands:
 
 ```bash
-createdb flask_template
-python -m flask_template.manage db upgrade
+createdb inspinia
+python -m inspinia.manage db upgrade
 ```
 
 #### Creating A Database Revision
@@ -40,13 +38,13 @@ python -m flask_template.manage db upgrade
 After making changes to the db models you can create a new version of the database using alembic:
 
 ```bash
-python -m flask_template.manage db migrate -m "<short commit message>"
+python -m inspinia.manage db migrate -m "<short commit message>"
 ```
 
-Review the migration file found in the [flask_template/migrations/versions](flask_template/migrations/versions) folder and make sure everything is correct, then run:
+Review the migration file found in the [inspinia/migrations/versions](inspinia/migrations/versions) folder and make sure everything is correct, then run:
 
 ```bash
-python -m flask_template.manage db upgrade
+python -m inspinia.manage db upgrade
 ```
 
 ***
@@ -68,9 +66,9 @@ honcho -e .env.dev start
 Lastly you can manually run the application using your environment as your configuration:
 
 ```bash
-python -m flask_template.main
+python -m inspinia.main
 # In a separate shell
-celery worker -A flask_template.tasks
+celery worker -A inspinia.tasks
 ```
 
 ***
@@ -80,13 +78,13 @@ celery worker -A flask_template.tasks
 All configuration is contained in the environment. You can check the current settings with the fllowing command:
 
 ```bash
-python -m flask_template.settings
+python -m inspinia.settings
 ```
 
 Or retrieve a single setting:
 
 ```bash
-python -m flask_template.settings <setting_name>
+python -m inspinia.settings <setting_name>
 ```
 
 ***
