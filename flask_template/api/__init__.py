@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 from __future__ import print_function, absolute_import, division, unicode_literals
 
+import json
 from functools import wraps
 
-from flask import jsonify, g
+from flask import g, current_app
 from werkzeug.exceptions import HTTPException
 
 from . import api_manager
@@ -41,7 +42,7 @@ def handle_error(ex):
     }
     if hasattr(g, 'sentry_event_id') and g.sentry_event_id:
         data['error']['event_id'] = g.sentry_event_id
-    return jsonify(data), ex.code
+    return current_app.response_class(json.dumps(data), mimetype='application/json', status=ex.code)
 
 
 def route(blueprint, *args, **kwargs):
@@ -56,7 +57,8 @@ def route(blueprint, *args, **kwargs):
             rv = func(*func_args, **func_kwargs)
             if isinstance(rv, tuple):
                 rv, status, headers = rv + (None,) * (3 - len(rv))
-            return jsonify(rv), status, headers
+            return current_app.response_class(json.dumps(rv), mimetype='application/json', status=status,
+                                              headers=headers)
 
         return func
 
