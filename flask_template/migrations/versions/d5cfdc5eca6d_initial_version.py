@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Initial version
 
 Revision ID: d5cfdc5eca6d

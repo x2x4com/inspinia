@@ -84,8 +84,9 @@ clean:
 	find $(project_dir) -name '__pycache__' -print -exec rm -r -- {} +
 	find $(project_dir) -name '.cache' -print -exec rm -r -- {} +
 	find $(project_dir) -name '*.egg-info' -print -exec rm -r -- {} +
-	rm -rfv $(project_dir)/.tox
 	rm -rfv $(project_dir)/.cache
 	rm -rfv $(project_dir)/tests/reports
 	rm -rfv $(project_dir)/build
 	rm -rfv $(project_dir)/dist
+	rm -fv install-requirements-*
+	rm -fv requirements-*

@@ -44,11 +44,11 @@ admin_only_preprocessors = dict(
     PATCH_RELATIONSHIP=[auth_func, admin_or_superuser],  # /api/user/1/relationships/articles
 )
 
-all_methods = set(['GET', 'POST', 'PUT', 'PATCH', 'DELETE'])
+all_methods = {'GET', 'POST', 'PUT', 'PATCH', 'DELETE'}
 
 
 def init_app(app):
-    manager = APIManager(app, flask_sqlalchemy_db=db)
+    manager = APIManager(app, flask_sqlalchemy_db=db, url_prefix='/models')
     manager.create_api(User,
                        preprocessors=admin_only_preprocessors,
                        url_prefix='',
