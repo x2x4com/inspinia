@@ -16,7 +16,7 @@ extensions.
 > Due to a pinned install requirements, it is recommended you use a virtualenv
 
 ```bash
-git clone https://github.com/20miler10/flask-template.git
+git clone https://github.com/derek-miller/flask-template.git
 cd flask-template
 python setup.py install
 ```
